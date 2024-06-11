@@ -1,4 +1,5 @@
 import time
+import torch
 from llama_index.core import SimpleDirectoryReader
 from llama_index.embeddings.fastembed import FastEmbedEmbedding
 from llama_index.core import Settings
@@ -41,11 +42,11 @@ llm = HuggingFaceLLM(
                     query_wrapper_prompt=query_wrapper_prompt,
                     tokenizer_name="meta-llama/Meta-Llama-3-8B-Instruct",
                     model_name="meta-llama/Meta-Llama-3-8B-Instruct",
-                    device_map="cpu",
+                    device_map="cuda",
                     stopping_ids=stopping_ids,
                     tokenizer_kwargs={"max_length": 4096},
                     # uncomment this if using CUDA to reduce memory usage
-                    # model_kwargs={"torch_dtype": torch.float16}
+                    model_kwargs={"torch_dtype": torch.float16}
                     )
 
 Settings.llm = llm
