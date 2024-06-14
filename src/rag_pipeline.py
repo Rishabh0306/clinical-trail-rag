@@ -11,10 +11,13 @@ from llama_index.core import StorageContext
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 import qdrant_client
 from llama_index.core.postprocessor import SentenceTransformerRerank
+from llama_index.core.node_parser import SimpleFileNodeParser
 
 
 # Load data
-documents = SimpleDirectoryReader("/data").load_data()
+documents = SimpleDirectoryReader("C:\\Users\\risha\Desktop\Projects\clinical-trail-rag\data").load_data()
+parser = SimpleFileNodeParser()
+md_nodes = parser.get_nodes_from_documents(documents)
 
 # Initialize Embeddings
 embed_model = FastEmbedEmbedding(model_name="BAAI/bge-small-en-v1.5")
@@ -24,7 +27,6 @@ Settings.embed_model = embed_model
 Settings.chunk_size = 512
 
 # Define System Prompt
-
 system_prompt = "You are a Q&A assistant. Your goal is to answer questions as accurately as possible based on the instructions and context provided."
 # This will wrap the default prompts that are internal to llama-index
 query_wrapper_prompt = PromptTemplate("<|USER|>{query_str}<|ASSISTANT|>")
@@ -69,7 +71,7 @@ location=":memory:"
 
 vector_store = QdrantVectorStore(client=client,collection_name="test")
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
-index = VectorStoreIndex.from_documents(documents, storage_context=storage_context,)
+index = VectorStoreIndex(nodes=md_nodes, storage_context=storage_context,)
 
 # Initialize Reranker
 rerank = SentenceTransformerRerank( model="cross-encoder/ms-marco-MiniLM-L-2-v2", top_n=3)
@@ -82,36 +84,17 @@ response = query_engine.query("Which company has conducted trail for BIBF 1120?"
 print(f"Response Generated: {response}")
 print(f"Elapsed: {round(time.time() - now, 2)}s")
 
-from ragas.integrations.llama_index import evaluate
-from ragas.metrics import (
-    faithfulness,
-    answer_relevancy,
-    context_precision,
-    context_recall,
+
+from llama_index.core.evaluation import DatasetGenerator
+from llama_index.core.evaluation import generate_question_context_pairs
+
+qa_dataset = generate_question_context_pairs(
+    md_nodes,
+    llm=llm,
+    num_questions_per_chunk=2
 )
 
-metrics = [
-    faithfulness,
-    answer_relevancy,
-    context_precision,
-    context_recall
-]
-
-ds_dict = {"question": "Which company has conducted trail for BIBF 1120?",
-           "answer": "Boehringer Ingelheim"}
-
-result = evaluate(
-    query_engine=query_engine,
-    metrics=metrics,
-    dataset=ds_dict,
-)
-
-# final scores
-print(result)
-
-df = result.to_pandas()
-
-df.to_csv("",index=False)
+qa_dataset.save_json("")
 
 
 
