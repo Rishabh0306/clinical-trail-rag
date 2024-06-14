@@ -1,4 +1,5 @@
 import os
+import time
 import asyncio
 import pandas as pd
 import torch
@@ -74,6 +75,11 @@ class ClinicalTrialRAG:
     def initialize_query_engine(self):
         rerank = SentenceTransformerRerank(model=reranker_model_name, top_n=3)
         self.query_engine = self.index.as_query_engine(similarity_top_k=10, node_postprocessors=[rerank])
+
+        now = time.time()
+        response = self.query_engine.query("Which company has conducted trail for BIBF 1120?")
+        print(f"Response Generated: {response}")
+        print(f"Elapsed: {round(time.time() - now, 2)}s")
 
     def initialize_rag_pipeline(self):
         self.load_data()
