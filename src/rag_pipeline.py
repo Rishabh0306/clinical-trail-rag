@@ -14,7 +14,7 @@ from llama_index.core.postprocessor import SentenceTransformerRerank
 
 
 # Load data
-documents = SimpleDirectoryReader("C:\\Users\\risha\Desktop\Projects\clinical-trail-rag\data").load_data()
+documents = SimpleDirectoryReader("/data").load_data()
 
 # Initialize Embeddings
 embed_model = FastEmbedEmbedding(model_name="BAAI/bge-small-en-v1.5")
@@ -46,7 +46,7 @@ llm = HuggingFaceLLM(
                     stopping_ids=stopping_ids,
                     tokenizer_kwargs={"max_length": 4096},
                     # uncomment this if using CUDA to reduce memory usage
-                    model_kwargs={"torch_dtype": torch.float16}
+                    model_kwargs={"torch_dtype": torch.float16, "load_in_8bit": True}
                     )
 
 Settings.llm = llm
@@ -78,9 +78,40 @@ rerank = SentenceTransformerRerank( model="cross-encoder/ms-marco-MiniLM-L-2-v2"
 query_engine = index.as_query_engine(similarity_top_k=10, node_postprocessors=[rerank])
 
 now = time.time()
-response = query_engine.query("What is the Background Information and Trial Rationale for Protocol Number DNDi-CH-E1224-003?",)
+response = query_engine.query("Which company has conducted trail for BIBF 1120?")
 print(f"Response Generated: {response}")
 print(f"Elapsed: {round(time.time() - now, 2)}s")
+
+from ragas.integrations.llama_index import evaluate
+from ragas.metrics import (
+    faithfulness,
+    answer_relevancy,
+    context_precision,
+    context_recall,
+)
+
+metrics = [
+    faithfulness,
+    answer_relevancy,
+    context_precision,
+    context_recall
+]
+
+ds_dict = {"question": "Which company has conducted trail for BIBF 1120?",
+           "answer": "Boehringer Ingelheim"}
+
+result = evaluate(
+    query_engine=query_engine,
+    metrics=metrics,
+    dataset=ds_dict,
+)
+
+# final scores
+print(result)
+
+df = result.to_pandas()
+
+df.to_csv("",index=False)
 
 
 
