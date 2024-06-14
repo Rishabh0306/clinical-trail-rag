@@ -74,7 +74,7 @@ storage_context = StorageContext.from_defaults(vector_store=vector_store)
 index = VectorStoreIndex(nodes=md_nodes, storage_context=storage_context,)
 
 # Initialize Reranker
-rerank = SentenceTransformerRerank( model="cross-encoder/ms-marco-MiniLM-L-2-v2", top_n=3)
+rerank = SentenceTransformerRerank(model="cross-encoder/ms-marco-MiniLM-L-2-v2", top_n=3)
 
 # Initialize query engine
 query_engine = index.as_query_engine(similarity_top_k=10, node_postprocessors=[rerank])
@@ -86,7 +86,7 @@ print(f"Elapsed: {round(time.time() - now, 2)}s")
 
 
 from llama_index.core.evaluation import DatasetGenerator
-from llama_index.core.evaluation import generate_question_context_pairs
+from llama_index.core.evaluation import generate_question_context_pairs, EmbeddingQAFinetuneDataset
 
 qa_dataset = generate_question_context_pairs(
     md_nodes,
@@ -95,6 +95,56 @@ qa_dataset = generate_question_context_pairs(
 )
 
 qa_dataset.save_json("")
+
+# Retrieval Evaluation
+
+EmbeddingQAFinetuneDataset.from_json("")
+
+retriever = index.as_retriever(similarity_top_k=10)
+retriever_evaluator = RetrieverEvaluator.from_metric_names(
+    ["mrr", "hit_rate"], retriever=retriever
+)
+
+# Evaluate
+eval_results = await retriever_evaluator.aevaluate_dataset(qa_dataset)
+
+def display_results(name, eval_results):
+    """Display results from evaluate."""
+
+    metric_dicts = []
+    for eval_result in eval_results:
+        metric_dict = eval_result.metric_vals_dict
+        metric_dicts.append(metric_dict)
+
+    full_df = pd.DataFrame(metric_dicts)
+
+    hit_rate = full_df["hit_rate"].mean()
+    mrr = full_df["mrr"].mean()
+
+    metric_df = pd.DataFrame(
+        {"Retriever Name": [name], "Hit Rate": [hit_rate], "MRR": [mrr]}
+    )
+
+    return metric_df
+
+display_results("OpenAI Embedding Retriever", eval_results)
+
+# Response Evaluation
+
+# Get the list of queries from the above created dataset
+queries = list(qa_dataset.queries.values())
+
+from llama_index.core.evaluation import FaithfulnessEvaluator
+eval_query = queries[10]
+response_vector = query_engine.query(eval_query)
+eval_result = faithfulness_gpt4.evaluate_response(response=response_vector)
+
+
+
+
+
+
+
 
 
 
