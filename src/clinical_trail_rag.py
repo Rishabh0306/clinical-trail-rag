@@ -140,8 +140,11 @@ class ClinicalTrialRAG:
         # Response Evaluation
         queries = list(qa_dataset.queries.values())
 
+        queries = queries[267]
+
         runner = BatchEvalRunner(
-            {"faithfulness": FaithfulnessEvaluator(), "relevancy": RelevancyEvaluator()}, )
+            {"faithfulness": FaithfulnessEvaluator(), "relevancy": RelevancyEvaluator()},
+                worker=1)
 
         eval_results = await runner.aevaluate_queries(
             self.query_engine, queries=queries
