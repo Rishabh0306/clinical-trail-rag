@@ -144,7 +144,7 @@ class ClinicalTrialRAG:
 
         runner = BatchEvalRunner(
             {"faithfulness": FaithfulnessEvaluator(), "relevancy": RelevancyEvaluator()},
-                worker=1)
+                workers=1)
 
         eval_results = await runner.aevaluate_queries(
             self.query_engine, queries=queries
