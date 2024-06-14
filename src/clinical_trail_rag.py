@@ -106,7 +106,7 @@ class ClinicalTrialRAG:
             ["mrr", "hit_rate"], retriever=retriever
         )
 
-        eval_results = retriever_evaluator.aevaluate_dataset(qa_dataset)
+        eval_results = await retriever_evaluator.aevaluate_dataset(qa_dataset)
 
         def extract_results(name, eval_results):
             """Extract results from evaluate."""
@@ -136,7 +136,7 @@ class ClinicalTrialRAG:
         runner = BatchEvalRunner(
             {"faithfulness": FaithfulnessEvaluator(), "relevancy": RelevancyEvaluator()}, )
 
-        eval_results = runner.aevaluate_queries(
+        eval_results = await runner.aevaluate_queries(
             self.query_engine, queries=queries
         )
 
