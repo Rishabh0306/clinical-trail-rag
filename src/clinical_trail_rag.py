@@ -146,7 +146,7 @@ class ClinicalTrialRAG:
 
         l = RelevancyEvaluator(llm=self.llm)
 
-        eval_result = l.evaluate_response(
+        eval_result = await l.evaluate_response(
             query=queries, response=response_vector
         )
 
