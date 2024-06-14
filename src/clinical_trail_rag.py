@@ -142,22 +142,30 @@ class ClinicalTrialRAG:
 
         queries = queries[267]
 
-        runner = BatchEvalRunner(
-            {"faithfulness": FaithfulnessEvaluator(), "relevancy": RelevancyEvaluator()},
-                workers=1)
+        response_vector = self.query_engine.query(queries)
 
-        eval_results = await runner.aevaluate_queries(
-            self.query_engine, queries=queries
+        eval_result = RelevancyEvaluator.evaluate_response(
+            query=queries, response=response_vector
         )
 
-        faithfulness_score = sum(result.passing for result in eval_results['faithfulness']) / len(
-            eval_results['faithfulness'])
+        print(eval_result)
 
-        print(faithfulness_score)
-
-        relevancy_score = sum(result.passing for result in eval_results['relevancy']) / len(eval_results['relevancy'])
-
-        print(relevancy_score)
+        # runner = BatchEvalRunner(
+        #     {"faithfulness": FaithfulnessEvaluator(), "relevancy": RelevancyEvaluator()},
+        #         workers=1)
+        #
+        # eval_results = await runner.aevaluate_queries(
+        #     self.query_engine, queries=queries
+        # )
+        #
+        # faithfulness_score = sum(result.passing for result in eval_results['faithfulness']) / len(
+        #     eval_results['faithfulness'])
+        #
+        # print(faithfulness_score)
+        #
+        # relevancy_score = sum(result.passing for result in eval_results['relevancy']) / len(eval_results['relevancy'])
+        #
+        # print(relevancy_score)
 
 if __name__ == '__main__':
     ct_rag = ClinicalTrialRAG()
