@@ -94,7 +94,7 @@ class ClinicalTrialRAG:
 
             qa_dataset.save_json(qa_dataset_path)
 
-    def evaluate_rag(self):
+    async def evaluate_rag(self):
         self.generate_qa_dataset()
 
         # Retrieval Evaluation
