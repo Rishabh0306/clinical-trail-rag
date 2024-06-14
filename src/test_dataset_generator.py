@@ -10,6 +10,7 @@ from llama_index.embeddings.fastembed import FastEmbedEmbedding
 from llama_index.core import PromptTemplate
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from llama_index.llms.huggingface import HuggingFaceLLM
+from ragas.run_config import RunConfig
 
 # os.environ['OPENAI_API_KEY'] = ""
 # openai.api_key = os.environ['OPENAI_API_KEY']
@@ -42,7 +43,7 @@ llm = HuggingFaceLLM(
                     stopping_ids=stopping_ids,
                     tokenizer_kwargs={"max_length": 4096},
                     # uncomment this if using CUDA to reduce memory usage
-                    model_kwargs={"torch_dtype": torch.float16}
+                    model_kwargs={"torch_dtype": torch.float16, "load_in_8bit": True}
                     )
 
 
@@ -61,11 +62,14 @@ generator = TestsetGenerator.from_llama_index(
     embeddings=embeddings,
 )
 
+run_config = RunConfig(max_workers=2)
+
 # generate testset
 testset = generator.generate_with_llamaindex_docs(
     documents,
     test_size=20,
     distributions={simple: 0.5, reasoning: 0.25, multi_context: 0.25},
+    run_config=run_config
 )
 
 df = testset.to_pandas()
