@@ -6,7 +6,7 @@ ct_rag.initialize_rag_pipeline()
 
 
 def generate_response(message, history):
-    return ct_rag.generate_response(message)
+    return str(ct_rag.generate_response(message))
 
 
 io = gr.ChatInterface(generate_response,
