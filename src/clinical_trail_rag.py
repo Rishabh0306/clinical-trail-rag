@@ -1,7 +1,5 @@
 import os
-import nest_asyncio
-
-nest_asyncio.apply()
+import asyncio
 import pandas as pd
 import torch
 from transformers import AutoTokenizer
@@ -97,7 +95,7 @@ class ClinicalTrialRAG:
 
             qa_dataset.save_json(qa_dataset_path)
 
-    def evaluate_rag(self):
+    async def evaluate_rag(self):
         self.generate_qa_dataset()
 
         # Retrieval Evaluation
@@ -155,7 +153,7 @@ class ClinicalTrialRAG:
 if __name__ == '__main__':
     ct_rag = ClinicalTrialRAG()
     ct_rag.initialize_rag_pipeline()
-    ct_rag.evaluate_rag()
+    asyncio.run(ct_rag.evaluate_rag())
 
 
 
