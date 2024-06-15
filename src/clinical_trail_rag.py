@@ -108,13 +108,20 @@ class ClinicalTrialRAG:
         # Retrieval Evaluation
         qa_dataset = EmbeddingQAFinetuneDataset.from_json(qa_dataset_path)
 
-        # retriever = self.index.as_retriever(similarity_top_k=10)
-        #
-        # retriever_evaluator = RetrieverEvaluator.from_metric_names(
-        #     ["mrr", "hit_rate"], retriever=retriever
-        # )
-        #
-        # eval_results = await retriever_evaluator.aevaluate_dataset(qa_dataset)
+        queries = list(qa_dataset.queries.values())
+
+        queries = queries[267]
+
+        retriever = self.index.as_retriever(similarity_top_k=10)
+
+        retriever_evaluator = RetrieverEvaluator.from_metric_names(
+            ["mrr", "hit_rate"], retriever=retriever
+        )
+
+        eval_results = retriever_evaluator.evaluate(queries, expected_ids=['5fa28bdf-b043-4808-b73c-477ec47d145d'])
+
+        print(f"Retrieval Score: {eval_results}")
+
         #
         # def extract_results(name, eval_results):
         #     """Extract results from evaluate."""
@@ -139,19 +146,25 @@ class ClinicalTrialRAG:
         # retrieval_results_df.to_csv(retrieval_results_path, index=False)
 
         # Response Evaluation
-        queries = list(qa_dataset.queries.values())
-
-        queries = queries[267]
-
         response_vector = self.query_engine.query(queries)
 
-        print(response_vector)
+        # print(response_vector)
 
         l = RelevancyEvaluator(llm=self.llm)
 
         eval_result = l.evaluate_response(
             query=queries, response=response_vector
         )
+
+        print(f"Relevancy Score: {eval_result}")
+
+        m = FaithfulnessEvaluator(llm=self.llm)
+
+        eval_result = l.evaluate_response(
+            query=queries, response=response_vector
+        )
+
+        print(f"Faithfulness Score: {eval_result}")
 
         # print(eval_result)
 
