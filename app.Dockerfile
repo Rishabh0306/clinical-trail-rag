@@ -5,6 +5,9 @@ COPY requirements.txt /clinical-trial-rag/requirements.txt
 WORKDIR /clinical-trial-rag
 RUN pip install -r requirements.txt
 
+RUN mkdir -p /root/.huggingface
+COPY token /root/.huggingface/token
+
 COPY data/ /clinical-trial-rag/data/
 COPY src/ /clinical-trial-rag/src/
 COPY test_data/ /clinical-trial-rag/test_data/
