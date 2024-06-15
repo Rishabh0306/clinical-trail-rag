@@ -84,61 +84,36 @@ response = query_engine.query("Which company has conducted trail for BIBF 1120?"
 print(f"Response Generated: {response}")
 print(f"Elapsed: {round(time.time() - now, 2)}s")
 
+from ragas.metrics import (
+    faithfulness,
+    answer_relevancy,
+    context_precision,
+    context_recall,
+)
 
-from llama_index.core.evaluation import DatasetGenerator
-from llama_index.core.evaluation import generate_question_context_pairs, EmbeddingQAFinetuneDataset
+metrics = [
+    faithfulness,
+    answer_relevancy,
+    context_precision,
+    context_recall,
+]
 
-qa_dataset = generate_question_context_pairs(
-    md_nodes,
+ds_dict = {}
+ds_dict["question"] = "Which company has conducted trail for BIBF 1120?"
+ds_dict["ground_truth"] = "Hello"
+
+from ragas.integrations.llama_index import evaluate
+
+result = evaluate(
+    query_engine=query_engine,
+    metrics=metrics,
+    dataset=ds_dict,
     llm=llm,
-    num_questions_per_chunk=2
+    embeddings=embed_model,
 )
 
-qa_dataset.save_json("")
-
-# Retrieval Evaluation
-
-EmbeddingQAFinetuneDataset.from_json("")
-
-retriever = index.as_retriever(similarity_top_k=10)
-retriever_evaluator = RetrieverEvaluator.from_metric_names(
-    ["mrr", "hit_rate"], retriever=retriever
-)
-
-# Evaluate
-eval_results = await retriever_evaluator.aevaluate_dataset(qa_dataset)
-
-def display_results(name, eval_results):
-    """Display results from evaluate."""
-
-    metric_dicts = []
-    for eval_result in eval_results:
-        metric_dict = eval_result.metric_vals_dict
-        metric_dicts.append(metric_dict)
-
-    full_df = pd.DataFrame(metric_dicts)
-
-    hit_rate = full_df["hit_rate"].mean()
-    mrr = full_df["mrr"].mean()
-
-    metric_df = pd.DataFrame(
-        {"Retriever Name": [name], "Hit Rate": [hit_rate], "MRR": [mrr]}
-    )
-
-    return metric_df
-
-display_results("OpenAI Embedding Retriever", eval_results)
-
-# Response Evaluation
-
-# Get the list of queries from the above created dataset
-queries = list(qa_dataset.queries.values())
-
-from llama_index.core.evaluation import FaithfulnessEvaluator
-eval_query = queries[10]
-response_vector = query_engine.query(eval_query)
-eval_result = faithfulness_gpt4.evaluate_response(response=response_vector)
-
+# final scores
+print(result)
 
 
 
