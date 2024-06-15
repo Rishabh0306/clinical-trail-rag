@@ -11,7 +11,6 @@ COPY token /root/.huggingface/token
 COPY data/ /clinical-trial-rag/data/
 COPY src/ /clinical-trial-rag/src/
 COPY test_data/ /clinical-trial-rag/test_data/
-COPY models/ /clinical-trial-rag/models/
 
 EXPOSE 9090
 
