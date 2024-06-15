@@ -41,7 +41,7 @@ class ClinicalTrialRAG:
             node.id_ = str(uuid.uuid5(namespace, name))
 
     def initialize_embeddings(self):
-        embed_model = FastEmbedEmbedding(model_name=embedding_model_name)
+        embed_model = FastEmbedEmbedding(model_name=embedding_model_name, cache_dir=model_path)
         Settings.embed_model = embed_model
         Settings.chunk_size = 512
 
@@ -50,7 +50,7 @@ class ClinicalTrialRAG:
         # This will wrap the default prompts that are internal to llama-index
         query_wrapper_prompt = PromptTemplate("<|USER|>{query_str}<|ASSISTANT|>")
 
-        tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+        tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, cache_dir=model_path)
         stopping_ids = [tokenizer.eos_token_id, tokenizer.convert_tokens_to_ids("<|eot_id|>"), ]
 
         self.llm = HuggingFaceLLM(
@@ -64,7 +64,7 @@ class ClinicalTrialRAG:
             device_map="cuda",
             stopping_ids=stopping_ids,
             tokenizer_kwargs={"max_length": 4096},
-            model_kwargs={"torch_dtype": torch.float16, "load_in_8bit": True}
+            model_kwargs={"torch_dtype": torch.float16, "load_in_8bit": True, "cache_dir": model_path}
         )
 
         Settings.llm = self.llm
