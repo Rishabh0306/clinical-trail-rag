@@ -73,10 +73,10 @@ class ClinicalTrialRAG:
         Settings.chunk_size = 512
 
     def initialize_vector_store(self):
-        client = qdrant_client.QdrantClient(location=":memory:")
-        vector_store = QdrantVectorStore(client=client, collection_name="test")
-        storage_context = StorageContext.from_defaults(vector_store=vector_store)
-        self.index = VectorStoreIndex(nodes=self.md_nodes, storage_context=storage_context,)
+        # client = qdrant_client.QdrantClient(location=":memory:")
+        # vector_store = QdrantVectorStore(client=client, collection_name="test")
+        # storage_context = StorageContext.from_defaults(vector_store=vector_store)
+        self.index = VectorStoreIndex(no)
 
     def initialize_query_engine(self):
         rerank = SentenceTransformerRerank(model=reranker_model_name, top_n=3)
