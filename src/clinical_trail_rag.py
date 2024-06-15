@@ -123,7 +123,7 @@ class ClinicalTrialRAG:
             metric_dict = eval_results.metric_vals_dict
             row['hit_rate'] = metric_dict['hit_rate']
             row['mrr'] = metric_dict['mrr']
-            output_df = output_df.append(row)
+            output_df = output_df._append(row, ignore_index=True)
 
         full_output_df = pd.DataFrame()
 
@@ -156,7 +156,7 @@ class ClinicalTrialRAG:
 
             row['faithfullness_result_score'] = faithfullness_result.score
 
-            full_output_df = full_output_df.append(row)
+            full_output_df = full_output_df._append(row, ignore_index=True)
 
         full_output_df.to_csv(results_path, index=False)
 
