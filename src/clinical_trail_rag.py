@@ -76,8 +76,7 @@ class ClinicalTrialRAG:
         # client = qdrant_client.QdrantClient(location=":memory:")
         # vector_store = QdrantVectorStore(client=client, collection_name="test")
         # storage_context = StorageContext.from_defaults(vector_store=vector_store)
-        self.index = VectorStoreIndex(no)
-
+        self.index = VectorStoreIndex(nodes=self.md_nodes)
     def initialize_query_engine(self):
         rerank = SentenceTransformerRerank(model=reranker_model_name, top_n=3)
         self.query_engine = self.index.as_query_engine(similarity_top_k=10, node_postprocessors=[rerank])
