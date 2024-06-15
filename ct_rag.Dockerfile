@@ -8,6 +8,7 @@ RUN pip install -r requirements.txt
 COPY data/ /home/test/clinical-trial-rag/data/
 COPY src/ /home/test/clinical-trial-rag/src/
 COPY test_data/ /home/test/clinical-trial-rag/test_data/
+COPY models/ /home/test/clinical-trial-rag/models/
 
 EXPOSE 9090
 
