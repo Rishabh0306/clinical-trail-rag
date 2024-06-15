@@ -20,4 +20,4 @@ io = gr.ChatInterface(generate_response,
                       )
 
 if __name__ == '__main__':
-    io.launch(server_name="127.0.0.1", server_port=9090)
+    io.launch(server_name="0.0.0.0", server_port=9090)
