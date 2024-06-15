@@ -1,0 +1,49 @@
+query,expected_ids,ground_truth
+What are the restrictions for clinical trials protocol CTJ301UC201?,['1fcbf72b-0236-58b6-a725-d4d8d02bf8f9'],"4.3.1 Prior and Concomitant Therapies
+Details of all concomitant medication will be recorded in the e-CRF, along with the main reason for 
+prescription. In addition, prior treatment for UC within 12 months of Visit 1 (Screening) will be 
+recorded.
+4.3.2 Prohibited Therapy
+Patients will be prohibited from taking any other IMP or undergo any other investigative treatment 
+during the trial from the time the informed consent form is signed through to at least the Follow-up 
+Visit, or any other IMP within 30 days or 5 half-lives prior to Visit 2 (whichever is longer).
+The following previous or concomitant medications are disallowed during the trial:
+• Immunomodulating/suppressing drugs, including JAK inhibitors (NB: AZA and 6-MP are 
+allowed as per inclusion criteria, see Section 4.1.1).
+• Antibiotics, when given as treatment for UC relapse.
+• Any biologic drugs.
+• Any live (attenuated) vaccines.
+4.3.3 Other Restrictions
+Patients on stable-dose concomitant treatment for UC at Visit 2 must remain on a stable dose 
+throughout the trial except for patients on corticosteroids; tapering of corticosteroids is allowed at 
+the discretion of the Investigator"
+"What type of pregnancy tests are required for participants in the clinical trial, and at which visits are they performed?",['81d7f201-aca4-5572-a85c-4e6956be0c73'],Serum pregnancy test at Visit 1 and urine pregnancy test at Visits 8 and 9
+Who are present in expert committee for clinical trial protocol CTJ301UC201?,['b981c5b0-a4e1-58db-9b71-4c7ca0436675'],"Prof. Dr. Stefan Schreiber 
+Institute for Clinical Molecular Biology University Hospital 
+Schleswig-Holstein
+Schittenhelmstrasse 12, 24105 Kiel, Germany"
+Who is the coordinating investigator for clinical trial protocol CTJ301UC201?,['b981c5b0-a4e1-58db-9b71-4c7ca0436675'],"Prof. Dr. Minhu Chen Chair, Department of Gastroenterology and Hepatology Vice President The First Affiliated Hospital, Sun Yat-sen University 58 Zhongshan Road, Guangzhou, China"
+What is the trail population for clinical trial protocol CTJ301UC201?,['7df854d8-55f0-57a9-8930-c6fdcb5e82f6'],"This trial is designed to include adult and elderly male and female outpatients with active, UC. Patients who fulfil all of the inclusion criteria (Section 4.1.1) and none of the exclusion criteria (Section 4.1.2) are eligible for inclusion in the trial"
+Which company has conducted clinical trial for BIBF 1120?,['1f248d8c-c118-56c6-bcad-2c35c397f11c'],Boehringer Ingelheim
+What are the trial objectives for clinical trial with number 1199.33?,['62adbfd9-67c6-519e-bcff-f05de0a31117'],The primary objective is to assess long term safety of treatment with oral nintedanib in patients with Idiopathic Pulmonary Fibrosis (IPF).
+What is the selected dose for clinical trial with number 1199.33?,['de710e91-8998-566e-aa02-161fd0ac7429'],"Based on the phase II safety and dose-finding trial 1199.30, a dose of 150 mg bid was selected for confirmatory phase III trials (1199.32/.34) (U07-1248). With 150 mg bid, the limit of tolerability in IPF patients is considered to be reached. Lower doses may not ensure full efficacy benefit. However, in case of lack of tolerability, the dose may be reduced temporarily or permanently to 100 mg bid."
+What is the treatment compliance for clinical trial with number 1199.33?,['0b56fe47-2377-5bbc-a628-4702ab2b2754'],"Study medication will be dispensed to the patient at the study site by responsible site personnel. Details regarding dispensing of the study medication to each participating patient, including patient identification, the amount of study drug dispensed, the date the drug was dispensed, and the number of capsules returned to the site will be recorded in the drug accountability form. Patients will be instructed to bring all study medication to the clinic at each visit (except Visits 3 and 5). The investigator will be responsible for the assessment of patient compliance and will be encouraged to counsel patients on the importance of taking study medication as directed at each visit. Study medication will be counted by the investigator (or designated site personnel) and compliance will be calculated in a worksheet, which must be kept as a source document. Compliance will be calculated according to the formula: Compliance (%) = Number of capsules actually taken since last count × 100 / Number of capsules which should have been taken in the same period. Compliance to nintedanib should be between 80% and 120%. Patients should not be discontinued for lack of compliance without prior discussion with the clinical monitor."
+Which date was clinical trial with number 1199.33 published on?,['1f248d8c-c118-56c6-bcad-2c35c397f11c'],28 Mar 2017
+What causes Chagas disease?,['480337b4-4987-5247-aa5d-47e7d165f35f'],Chagas disease (CD) is a disease caused by Trypanosoma cruzi (T. cruzi)
+What is the primary objective for clinical trial protocol DNDi-CH-E1224-003?,['9fb16aae-3b81-569e-80ea-77de52855066'],"To determine the efficacy of different dosing regimens of orally administered BZN and BZN/E1224 in individuals with chronic indeterminate CD, by determining the proportion of patients who convert from positive to negative in serial, qualitative PCR test results (3 negative PCR results) at end-of-treatment (EOT) and sustain parasitological clearance at 6 months of follow-up, in comparison to placebo"
+What is the storage strategy for clinical trial protocol DNDi-CH-E1224-003?,['3bd324b3-16bc-59c8-8e71-284aa5a65b65'],"Stability trials performed by Eisai showed that E1224 100-mg capsules were stable at 30°C/75% RH for 12 months and 40°C/75% RH for 6 months. Therefore, provisional shelf life for E1224 100-mg capsules is 24 months at controlled room temperature. The shelf life of the 100-mg capsules will be extended based on the results of future stability data. BZN tablets are stable at room temperature (15 ± 30o C). Therefore, the trial drug can be shipped at normal conditions and must be kept at room temperatures, at 30o C. The trial drugs must be kept in a locked room at each of the trial sites, with restricted access only by the authorized trial personnel and/or pharmacist. Site storage conditions and temperature must be monitored by the site personnel for adherence to product specifications. Records must be done at least once daily and kept in the investigator trial file or in the pharmacy file"
+What are assessment timings for clinical trial protocol DNDi-CH-E1224-003?,['6b2767a0-8c76-5762-abeb-439a34ccdedf'],"As described in Section 5, Schedule of events, trial assessments will be done at 
+Screening (Days ±D -40 to D -1), Day 0 (baseline), Day 1, Day 2, Day 3 (allowable window of 
++ 2 days for day 3 only), at weekly intervals at week 2 (allowable window of + 3 days), 3, 4, 6, 
+8, 10, and 12 (allowable window of ± 3 days), and after 4, 6, and 12 months from treatment 
+initiation (allowable window of ± 7 days). On the weeks 5 and 7, patients will go directly to the 
+pharmacy to return and take their treatments (E1224 will be administered on site).
+The primary efficacy assessment will be done at EOT, week 12 and at 4, and 6months 
+of follow-up by serial qualitative PCR (3 samples to be collected in the same day). Secondary 
+efficacy assessments will be performed at weeks 1, 2, 3, 4, 6, 10, 12, and at 4, and 12 months.
+PK assessments will be done at Day 0 (pre-dose), Day 1 (post 1st dose), Day 2, Day 3, 
+week 2, 3, 4, 6 (steady-state phase), and at week 10 (elimination phase).
+Safety assessments will be done at Day 1 (post-dose), at D2, D3, W2, W3, W4, W6, W8, 
+W10, W12, and at 4, 6, and 12 months, and at any unscheduled visit"
+Who are the manufacturers for clinical trial protocol DNDi-CH-E1224-003?,['a4e002f6-0b6a-53ec-9f1a-fa054d229828'],"Laboratório Elea, Buenos Aires, Argentina
+Eisai Co, Ltd., Tokyo, Japan"
