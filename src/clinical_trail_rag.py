@@ -1,4 +1,5 @@
 import os
+import uuid
 import time
 import nest_asyncio
 nest_asyncio.apply()
@@ -36,8 +37,10 @@ class ClinicalTrialRAG:
         documents = SimpleDirectoryReader(data_path).load_data()
         parser = SimpleFileNodeParser()
         self.md_nodes = parser.get_nodes_from_documents(documents)
+        namespace = uuid.NAMESPACE_DNS
         for idx, node in enumerate(self.md_nodes):
-            node.id_ = f"node_{idx}"
+            name = f"node_{idx}"
+            node.id_ = str(uuid.uuid5(namespace, name))
 
     def initialize_embeddings(self):
         embed_model = FastEmbedEmbedding(model_name=embedding_model_name)
@@ -120,7 +123,7 @@ class ClinicalTrialRAG:
             ["mrr", "hit_rate"], retriever=retriever
         )
 
-        eval_results = retriever_evaluator.evaluate(queries, expected_ids=['node_133'])
+        eval_results = retriever_evaluator.evaluate(queries, expected_ids=['81d7f201-aca4-5572-a85c-4e6956be0c73'])
 
         print(f"Retrieval Score: {eval_results}")
 
