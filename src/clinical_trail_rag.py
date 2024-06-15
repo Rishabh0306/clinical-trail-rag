@@ -1,3 +1,4 @@
+import ast
 import os
 import uuid
 import time
@@ -37,6 +38,7 @@ class ClinicalTrialRAG:
         documents = SimpleDirectoryReader(data_path).load_data()
         parser = SimpleFileNodeParser()
         self.md_nodes = parser.get_nodes_from_documents(documents)
+        # Assign ids to keep the node ids consistent across runs
         namespace = uuid.NAMESPACE_DNS
         for idx, node in enumerate(self.md_nodes):
             name = f"node_{idx}"
@@ -73,10 +75,8 @@ class ClinicalTrialRAG:
         Settings.chunk_size = 512
 
     def initialize_vector_store(self):
-        # client = qdrant_client.QdrantClient(location=":memory:")
-        # vector_store = QdrantVectorStore(client=client, collection_name="test")
-        # storage_context = StorageContext.from_defaults(vector_store=vector_store)
         self.index = VectorStoreIndex(nodes=self.md_nodes)
+
     def initialize_query_engine(self):
         rerank = SentenceTransformerRerank(model=reranker_model_name, top_n=3)
         self.query_engine = self.index.as_query_engine(similarity_top_k=10, node_postprocessors=[rerank])
@@ -107,87 +107,59 @@ class ClinicalTrialRAG:
             qa_dataset.save_json(qa_dataset_path)
 
     def evaluate_rag(self):
-        self.generate_qa_dataset()
+        output_df = pd.DataFrame()
+
+        test_data = pd.read_csv(test_dataset_path)
 
         # Retrieval Evaluation
-        qa_dataset = EmbeddingQAFinetuneDataset.from_json(qa_dataset_path)
-
-        queries = list(qa_dataset.queries.values())
-
-        queries = queries[267]
-
         retriever = self.index.as_retriever(similarity_top_k=10)
 
         retriever_evaluator = RetrieverEvaluator.from_metric_names(
             ["mrr", "hit_rate"], retriever=retriever
         )
 
-        eval_results = retriever_evaluator.evaluate(queries, expected_ids=['81d7f201-aca4-5572-a85c-4e6956be0c73'])
+        for idx, row in test_data.iterrows():
+            eval_results = retriever_evaluator.evaluate(row['query'], expected_ids=ast.literal_eval(row['expected_ids']))
+            metric_dict = eval_results.metric_vals_dict
+            row['hit_rate'] = metric_dict['hit_rate']
+            row['mrr'] = metric_dict['mrr']
+            output_df = output_df.append(row)
 
-        print(f"Retrieval Score: {eval_results}")
-
-        #
-        # def extract_results(name, eval_results):
-        #     """Extract results from evaluate."""
-        #
-        #     metric_dicts = []
-        #     for eval_result in eval_results:
-        #         metric_dict = eval_result.metric_vals_dict
-        #         metric_dicts.append(metric_dict)
-        #
-        #     full_df = pd.DataFrame(metric_dicts)
-        #
-        #     hit_rate = full_df["hit_rate"].mean()
-        #     mrr = full_df["mrr"].mean()
-        #
-        #     metric_df = pd.DataFrame(
-        #         {"Retriever Name": [name], "Hit Rate": [hit_rate], "MRR": [mrr]}
-        #     )
-        #
-        #     return metric_df
-        #
-        # retrieval_results_df = extract_results("Retriever Results", eval_results)
-        # retrieval_results_df.to_csv(retrieval_results_path, index=False)
+        full_output_df = pd.DataFrame()
 
         # Response Evaluation
-        response_vector = self.query_engine.query(queries)
+        for idx, row in output_df.iterrows():
+            response_vector = self.query_engine.query(row['query'])
+            row['response'] = str(response_vector)
 
-        # print(response_vector)
+            relevancy_evaluator = RelevancyEvaluator(llm=self.llm)
 
-        l = RelevancyEvaluator(llm=self.llm)
+            relevancy_result = relevancy_evaluator.evaluate_response(
+                query=row['query'], response=response_vector
+            )
 
-        eval_result = l.evaluate_response(
-            query=queries, response=response_vector
-        )
+            row['relevancy_result_contexts'] = relevancy_result.contexts
 
-        print(f"Relevancy Score: {eval_result}")
+            row['relevancy_result_passing'] = relevancy_result.passing
 
-        m = FaithfulnessEvaluator(llm=self.llm)
+            row['relevancy_result_score'] = relevancy_result.score
 
-        eval_result = l.evaluate_response(
-            query=queries, response=response_vector
-        )
+            faithfullness_evaluator = FaithfulnessEvaluator(llm=self.llm)
 
-        print(f"Faithfulness Score: {eval_result}")
+            faithfullness_result = faithfullness_evaluator.evaluate_response(
+                query=row['query'], response=response_vector
+            )
 
-        # print(eval_result)
+            row['faithfullness_result_contexts'] = faithfullness_result.contexts
 
-        # runner = BatchEvalRunner(
-        #     {"faithfulness": FaithfulnessEvaluator(), "relevancy": RelevancyEvaluator()},
-        #         workers=1)
-        #
-        # eval_results = await runner.aevaluate_queries(
-        #     self.query_engine, queries=queries
-        # )
-        #
-        # faithfulness_score = sum(result.passing for result in eval_results['faithfulness']) / len(
-        #     eval_results['faithfulness'])
-        #
-        # print(faithfulness_score)
-        #
-        # relevancy_score = sum(result.passing for result in eval_results['relevancy']) / len(eval_results['relevancy'])
-        #
-        # print(relevancy_score)
+            row['faithfullness_result_passing'] = faithfullness_result.passing
+
+            row['faithfullness_result_score'] = faithfullness_result.score
+
+            full_output_df = full_output_df.append(row)
+
+        full_output_df.to_csv(results_path, index=False)
+
 
 if __name__ == '__main__':
     ct_rag = ClinicalTrialRAG()

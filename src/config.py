@@ -6,4 +6,5 @@ tokenizer_name = ""
 reranker_model_name = ""
 bl_generate_qa_dataset = False
 qa_dataset_path = ""
-retrieval_results_path = ""
+test_dataset_path = ""
+results_path = ""
