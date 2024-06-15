@@ -13,16 +13,12 @@ from llama_index.embeddings.fastembed import FastEmbedEmbedding
 from llama_index.core import Settings
 from llama_index.core import PromptTemplate
 from llama_index.llms.huggingface import HuggingFaceLLM
-import qdrant_client
 from llama_index.core import VectorStoreIndex
-from llama_index.core import StorageContext
-from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.core.postprocessor import SentenceTransformerRerank
-from llama_index.core.evaluation import generate_question_context_pairs, EmbeddingQAFinetuneDataset
+from llama_index.core.evaluation import generate_question_context_pairs
 from llama_index.core.evaluation import RetrieverEvaluator
 from llama_index.core.evaluation import FaithfulnessEvaluator
 from llama_index.core.evaluation import RelevancyEvaluator
-from llama_index.core.evaluation import BatchEvalRunner
 
 from config import *
 
