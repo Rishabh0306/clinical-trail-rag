@@ -1,0 +1,7 @@
+transformers==4.39.3
+llama-index==0.10.32
+llama-index-embeddings-fastembed==0.1.4
+llama-index-llms-huggingface==0.1.4
+gradio==4.36.1
+gradio_client==1.0.1
+bitsandbytes==0.43.1
