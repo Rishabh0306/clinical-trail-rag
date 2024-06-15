@@ -36,6 +36,8 @@ class ClinicalTrialRAG:
         documents = SimpleDirectoryReader(data_path).load_data()
         parser = SimpleFileNodeParser()
         self.md_nodes = parser.get_nodes_from_documents(documents)
+        for idx, node in enumerate(self.md_nodes):
+            node.id_ = f"node_{idx}"
 
     def initialize_embeddings(self):
         embed_model = FastEmbedEmbedding(model_name=embedding_model_name)
@@ -118,7 +120,7 @@ class ClinicalTrialRAG:
             ["mrr", "hit_rate"], retriever=retriever
         )
 
-        eval_results = retriever_evaluator.evaluate(queries, expected_ids=['5fa28bdf-b043-4808-b73c-477ec47d145d'])
+        eval_results = retriever_evaluator.evaluate(queries, expected_ids=['node_133'])
 
         print(f"Retrieval Score: {eval_results}")
 
