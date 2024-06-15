@@ -54,24 +54,24 @@ llm = HuggingFaceLLM(
 Settings.llm = llm
 Settings.chunk_size = 512
 
-# Initialize Vector Store
-client = qdrant_client.QdrantClient(
-# you can use :memory: mode for fast and light-weight experiments,
-# it does not require to have Qdrant deployed anywhere
-# but requires qdrant-client >= 1.1.1
-location=":memory:"
-# otherwise set Qdrant instance address with:
-# url="http://<host>:<port>"
-# otherwise set Qdrant instance with host and port:
-#host="localhost",
-#port=6333
-# set API KEY for Qdrant Cloud
-#api_key=<YOUR API KEY>
-)
-
-vector_store = QdrantVectorStore(client=client,collection_name="test")
-storage_context = StorageContext.from_defaults(vector_store=vector_store)
-index = VectorStoreIndex(nodes=md_nodes, storage_context=storage_context,)
+# # Initialize Vector Store
+# client = qdrant_client.QdrantClient(
+# # you can use :memory: mode for fast and light-weight experiments,
+# # it does not require to have Qdrant deployed anywhere
+# # but requires qdrant-client >= 1.1.1
+# location=":memory:"
+# # otherwise set Qdrant instance address with:
+# # url="http://<host>:<port>"
+# # otherwise set Qdrant instance with host and port:
+# #host="localhost",
+# #port=6333
+# # set API KEY for Qdrant Cloud
+# #api_key=<YOUR API KEY>
+# )
+#
+# vector_store = QdrantVectorStore(client=client,collection_name="test")
+# storage_context = StorageContext.from_defaults(vector_store=vector_store)
+index = VectorStoreIndex(nodes=md_nodes)
 
 # Initialize Reranker
 rerank = SentenceTransformerRerank(model="cross-encoder/ms-marco-MiniLM-L-2-v2", top_n=3)
