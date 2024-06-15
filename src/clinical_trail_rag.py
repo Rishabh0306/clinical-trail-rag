@@ -2,8 +2,6 @@ import ast
 import os
 import uuid
 import time
-import nest_asyncio
-nest_asyncio.apply()
 import pandas as pd
 import torch
 from transformers import AutoTokenizer
@@ -158,6 +156,8 @@ class ClinicalTrialRAG:
 
 
 if __name__ == '__main__':
+    import nest_asyncio
+    nest_asyncio.apply()
     ct_rag = ClinicalTrialRAG()
     ct_rag.initialize_rag_pipeline()
     ct_rag.evaluate_rag()
