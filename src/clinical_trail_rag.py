@@ -5,6 +5,7 @@ import time
 import pandas as pd
 import torch
 from transformers import AutoTokenizer
+from huggingface_hub import login
 from llama_index.core import SimpleDirectoryReader
 from llama_index.core.node_parser import SimpleFileNodeParser
 from llama_index.embeddings.fastembed import FastEmbedEmbedding
@@ -19,6 +20,10 @@ from llama_index.core.evaluation import FaithfulnessEvaluator
 from llama_index.core.evaluation import RelevancyEvaluator
 
 from config import *
+
+# Read token from environment variable
+token = os.getenv('HF_TOKEN')
+login(token)
 
 
 class ClinicalTrialRAG:
