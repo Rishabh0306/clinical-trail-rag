@@ -145,13 +145,15 @@ class ClinicalTrialRAG:
 
         response_vector = self.query_engine.query(queries)
 
+        print(response_vector)
+
         l = RelevancyEvaluator(llm=self.llm)
 
         eval_result = l.evaluate_response(
             query=queries, response=response_vector
         )
 
-        print(eval_result)
+        # print(eval_result)
 
         # runner = BatchEvalRunner(
         #     {"faithfulness": FaithfulnessEvaluator(), "relevancy": RelevancyEvaluator()},
