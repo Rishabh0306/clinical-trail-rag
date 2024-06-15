@@ -1,3 +1,4 @@
+sentence-transformers==2.7.0
 transformers==4.39.3
 llama-index==0.10.32
 llama-index-embeddings-fastembed==0.1.4
