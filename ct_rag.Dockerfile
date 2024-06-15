@@ -1,4 +1,4 @@
-from python3.10
+from python:3.10
 RUN mkdir /home/test/clinical-trial-rag
 
 COPY requirements.txt /home/test/clinical-trial-rag/requirements.txt
