@@ -21,8 +21,9 @@ Python Version: 3.10.12
    1. Setup virtual environment: python3 -m venv venv 
    2. Activate virtual environment: source venv/bin/activate
    3. Install requirements: pip install -r requirements.txt 
-   4. Run RAG app: python3 src/app.py
-   5. Run evaluation: python3 src/clinical_trail_rag.py
+   4. Set HF_TOKEN environment variable: export HF_TOKEN=<HUGGINGFACE TOKEN>
+   5. Run RAG app: python3 src/app.py
+   6. Run evaluation: python3 src/clinical_trail_rag.py
 
 ### Benchmarks:
 1. [CPU Usage](benchmarks/cpu_usage.png)
