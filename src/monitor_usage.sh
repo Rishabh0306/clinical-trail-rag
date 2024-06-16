@@ -11,7 +11,7 @@ GPU_LOG="$LOG_DIR/gpu_usage.log"
 GPU_MEMORY_LOG="$LOG_DIR/gpu_memory_usage.log"
 
 # Duration to monitor (in seconds)
-DURATION=60
+DURATION=400
 INTERVAL=1
 
 # Get container ID of the running Docker container
