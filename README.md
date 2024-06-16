@@ -16,12 +16,12 @@ Python Version: 3.10.12
 1. Clone the repository
 2. Using docker:  
    1. docker build -t test_rag -f app.Dockerfile .
-   2. docker run -d --gpus all --name my_test_rag_container -p 9090:9090 -e HF_TOKEN=<HUGGINGFACE TOKEN> -v <MODEL_DIRECTORY_PATH>:/clinical-trial-rag/models test_rag
+   2. docker run -d --gpus all --name my_test_rag_container -p 9090:9090 -e HF_TOKEN=<HUGGINGFACE_TOKEN> -v <MODEL_DIRECTORY_PATH>:/clinical-trial-rag/models test_rag
 3. Using Python:
    1. Setup virtual environment: python3 -m venv venv 
    2. Activate virtual environment: source venv/bin/activate
    3. Install requirements: pip install -r requirements.txt 
-   4. Set HF_TOKEN environment variable: export HF_TOKEN=<HUGGINGFACE TOKEN>
+   4. Set HF_TOKEN environment variable: export HF_TOKEN=<HUGGINGFACE_TOKEN>
    5. Run RAG app: python3 src/app.py
    6. Run evaluation: python3 src/clinical_trail_rag.py
 
